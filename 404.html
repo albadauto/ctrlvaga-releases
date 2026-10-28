@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Google tag (gtag.js) · Google Ads -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18541259345"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'AW-18541259345');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CtrlVaga · Seu copiloto de entrevistas, ao vivo</title>
+    <meta name="description" content="O CtrlVaga transcreve o entrevistador em tempo real e mostra, em menos de um segundo, como começar a resposta, os pontos principais e um exemplo do seu currículo." />
+    <meta name="theme-color" content="#030207" />
+    <base href="/ctrlvaga-releases/" />
+
+    <meta property="og:title" content="CtrlVaga · Seu copiloto de entrevistas" />
+    <meta property="og:description" content="Respostas ao vivo, com o seu currículo, em menos de 1 segundo." />
+    <meta property="og:image" content="img/og.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/app.css?v=3" />
+</head>
+
+<body>
+    <div id="app">
+        <!-- Tela de carregamento enquanto o Blazor baixa: mesma cara do site -->
+        <div class="boot">
+            <img src="img/icon.png" alt="" width="72" height="72" />
+            <div class="boot-bar"><span></span></div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui" class="fixed inset-x-0 bottom-0 z-50 hidden bg-amber-400 px-4 py-3 text-center text-sm text-navy">
+        Algo deu errado · Algo salió mal · Something went wrong. <a href="" class="reload font-semibold underline">↻</a>
+        <a class="dismiss ml-3 cursor-pointer">✕</a>
+    </div>
+
+    <script>
+        // Idioma do site (usado pelo SiteLanguage): ?lang= na URL, escolha salva ou idioma do navegador.
+        // Sistema do visitante: no Windows o download vai para a Microsoft Store.
+        window.ctrlvagaPlatform = {
+            isWindows: function () {
+                var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || "";
+                return /win/i.test(p);
+            }
+        };
+
+        window.ctrlvagaLang = {
+            get: function () {
+                var fromUrl = new URLSearchParams(location.search).get("lang");
+                if (fromUrl) return fromUrl;
+                try {
+                    var saved = localStorage.getItem("ctrlvaga-lang");
+                    if (saved) return saved;
+                } catch (e) { }
+                return navigator.language || "pt";
+            },
+            apply: function (code, htmlLang, title) {
+                document.documentElement.lang = htmlLang;
+                if (title) document.title = title;
+            },
+            set: function (code, htmlLang, title) {
+                try { localStorage.setItem("ctrlvaga-lang", code); } catch (e) { }
+                window.ctrlvagaLang.apply(code, htmlLang, title);
+                var url = new URL(location.href);
+                if (url.searchParams.has("lang")) {
+                    url.searchParams.set("lang", code);
+                    history.replaceState(null, "", url);
+                }
+            }
+        };
+    </script>
+    <script src="js/download-tracking.js?v=2"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>
